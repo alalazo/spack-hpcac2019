@@ -1,0 +1,763 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <title>Spack: a Package Manager for Scientific Software</title>
+
+    <meta name="description" content="Presentation for the 10th HPC Advisory Council in Lugano.">
+    <meta name="author" content="Massimiliano Culpo">
+
+
+    <link rel="stylesheet" href="css/reveal.css">
+    <link rel="stylesheet" href="css/theme/night.css">
+
+    <!-- Theme used for syntax highlighting of code -->
+    <link rel="stylesheet" href="lib/css/zenburn.css">
+
+    <!-- Printing and PDF exports -->
+    <script>
+        var link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = window.location.search.match(/print-pdf/gi) ? 'css/print/pdf.css' : 'css/print/paper.css';
+        document.getElementsByTagName('head')[0].appendChild(link);
+    </script>
+</head>
+<body>
+<div class="reveal">
+    <div class="slides">
+
+        <!-- TITLE -->
+        <section data-background-image="resources/epfl-title-page.jpg"
+                 data-background-opacity=0.5>
+            <h3>Spack: a Package Manager for Scientific Software</h3>
+            Massimiliano Culpo - SCITAS, EPFL
+        </section>
+
+        <!-- SPACK IN a nutshell -->
+        <section data-background-image="resources/slide-background.svg" data-background-opacity="0.9">
+
+            <section>
+                <img src="resources/spack-logo-white.svg" width="20%" height="auto" style="background: none; border: 0px">
+                <h2>Spack in a nutshell</h2>
+                A 10 minutes introduction to the tool
+            </section>
+
+            <section>
+                <h3>Spack is a <u>package manager</u></h3>
+                <ul>
+                    <li>Tracks metadata for installed software</li>
+                    <li>Multiple configurations of the same software</li>
+                    <li>Support for supercomputers, linux and MacOS</li>
+                    <li>Builds from sources, supports binary packaging</li>
+                    <!-- <li>Provides packages for multiple languages</li> -->
+                    <li>Can be used for deployment, development or QA</li>
+                </ul>
+                <br>
+                <p><a href="https://spack.io/">https://spack.io</a></p>
+            </section>
+
+            <section>
+                <h3>Who can profit from Spack?</h3>
+                <ul>
+                    <li>End users of HPC software</li>
+                    <li>HPC application teams</li>
+                    <li>Package developers</li>
+                    <li>User support teams at HPC centers</li>
+                </ul>
+            </section>
+
+            <section>
+                <h3>Spack is <u>open source</u></h3>
+                <ul>
+                    <li>Started by <u>Todd Gamblin</u> (LLNL, Lead Developer)</li>
+                    <li>Very active and engaging community</li>
+                    <li>Dual license Apache-2.0 or MIT</li>
+                    <li>Switched from LGPL to be company friendly</li>
+                    <li>Want to get buy-in and PRs by HPC vendors</li>
+                </ul>
+                <br>
+                <p><a href="https://github.com/spack/spack">https://github.com/spack/spack</a></p>
+            </section>
+
+            <section>
+                <h3>Spack is used worldwide!</h3>
+                <div>
+                    <img src="resources/spack-usage-worldwide.png" height="70%" width="70%">
+                </div>
+                Sessions on <a href="https://spack.readthedocs.io" >spack.readthedocs.io</a>  for one month
+            </section>
+
+            <section>
+                <h3>Contributions to Spack</h3>
+                <div>
+                    <img id="contributions-plot"
+                         src="resources/github_contributions_packages.png"
+                         height="80%" width="80%"
+                         ondblclick="document.getElementById('contributions-plot').setAttribute('src','resources/github_contributions_packages.png'); return false;"
+                         onclick="document.getElementById('contributions-plot').setAttribute('src','resources/github_contributions_core.png'); return false;"
+                    >
+                </div>
+                Spack is committed to be open source
+            </section>
+
+            <section>
+                <h3>Clone it and you're ready to go!</h3>
+                <pre><code class="shell" data-trim>
+	      $ git clone https://github.com/spack/spack.git
+	      $ . spack/share/spack/setup-env.sh
+
+	      $ spack install hdf5
+	            </code></pre>
+            </section>
+
+            <section>
+                <h3>Packages are Python classes</h3>
+                <pre><code class="python" data-trim="">
+class Kripke(Package):
+    """Kripke is a simple, scalable, 3D Sn
+    deterministic particle transport mini app.
+    """
+    homepage = "https://codesign.llnl.gov/kripke.php"
+    url      = "https://codesign.llnl.gov/kripke-1.1.tar.gz"
+
+    version('1.1', '7fe6f2b26ed983a6ce5495ab701f85bf')
+    version('1.0', 'f4247dde07952a5ff866b24e45b5cdd1')
+
+    variant('mpi', default=True, description='Build with MPI.')
+
+    depends_on('mpi', when="+mpi")
+                </code></pre>
+            </section>
+
+            <section>
+                <h3>Easy to work with packages</h3>
+                <pre><code class="shell" data-trim>
+                    $ # Create a new package in the built-in repository
+                    $ spack create &lt;url&gt;
+
+                    $ # Modify an existing package
+                    $ export EDITOR='emacs -nw'
+                    $ spack edit &lt;package-name&gt;
+
+                    $ # Scrape for versions of an existing package
+                    $ spack versions &lt;package-name&gt;
+                </code></pre>
+            </section>
+
+        </section>
+
+        <!-- How is Spack different from EasyBuild -->
+        <section data-background-image="resources/slide-background.svg" data-background-opacity="0.9" >
+            <section>
+                <h3>3 reasons Spack is different from Easybuild</h3>
+            </section>
+        </section>
+
+        <!-- Fight combinatorics -->
+        <section data-background-image="resources/slide-background.svg" data-background-opacity="0.9" >
+            <section>
+                <h3>Spack fights combinatorics with combinatorics!</h3>
+            </section>
+
+            <section>
+                <h4>Complexity of a typical HPC ecosystem</h4>
+                <div>
+                    <img src="resources/need_for_combinatorics.svg" width="70%" height="70%"
+                         style="background: none; border: 0px">
+                </div>
+                Software must be easy to use in any configuration
+            </section>
+
+            <section>
+                <h4>The <em>spec</em> syntax describes user's needs</h4>
+                <pre><code class="shell" data-trim>
+   $ # Install a specific version by appending @
+   $ spack install hdf5@1.10.1
+
+   $ # Specify a compiler (and optional version), with %
+   $ spack install hdf5@1.10.1 %gcc@4.7.3
+
+   $ # Add special boolean compile-time options with +
+   $ spack install hdf5@1.10.1 +szip
+
+   $ # Add custom compiler flags
+   $ spack install hdf5@1.10.1 cppflags="-O3 -floop-block"
+
+   $ # Cross-compile on a Cray or Blue Gene/Q
+   $ spack install hdf5@1.10.1 target=backend
+                </code></pre>
+                <!-- Each expression maps to a particular configuration -->
+            </section>
+
+            <section>
+                <h4><em>Directives</em> model allowed configurations</h4>
+                <pre><code class="python" data-trim>
+class Openblas(MakefilePackage):
+    """OpenBLAS: An optimized BLAS library"""
+
+    homepage = 'http://www.openblas.net'
+    url      = 'http://github.com/OpenBLAS/v0.2.19.tar.gz'
+
+    version('0.3.4', sha256='4b4b4453251')
+    version('0.3.3', sha256='49d88f4494a')
+
+    variant('shared', default=True,
+            description='Build shared libraries')
+    variant('ilp64', default=False,
+            description='64 bit integers')
+
+    conflicts('%intel@16', when='@0.2.15:0.2.19')
+
+                </code></pre>
+            </section>
+
+            <section>
+                <h4>The concretizer fills in missing details</h4>
+                <div>
+                    <img src="resources/concretizer.svg" width="40%" height="40%"
+                         style="background: none; border: 0px">
+                </div>
+                The <em>abstract spec</em> is turned into a <em>concrete configuration</em>
+                that can be installed
+            </section>
+
+            <section>
+                <h4>Each configuration is installed in its own prefix</h4>
+                <div>
+                    <img src="resources/unique_prefix.svg" width="50%" height="50%"
+                         style="background: none; border: 0px">
+                </div>
+                All the software is installed in the <em>Spack's store</em>
+            </section>
+
+            <section>
+                <h4>The results of concretization can be queried</h4>
+                <pre><code class="shell" data-trim>
+$ spack spec -Il hdf5+mpi ^mpich
+Input spec
+--------------------------------
+ -   hdf5+mpi
+ -       ^mpich
+
+Concretized
+--------------------------------
+ -   wqoi56r  hdf5@1.10.4%gcc@8.2.0~cxx~debug~fortran~hl+mpi+pic+shared~szip~threadsafe arch=linux-ubuntu18.04-x86_64
+ -   k2mhs2k      ^mpich@3.3%gcc@8.2.0 device=ch3 +hydra netmod=tcp +pmi+romio~verbs arch=linux-ubuntu18.04-x86_64
+ -   rwrp443          ^findutils@4.6.0%gcc@8.2.0 patches=84b916c0bf8c51b7e7b28417692f0ad3e7030d1f3c248ba77c42ede5c1c5d11e,bd9e4e5cc280f9753ae14956c4e4aa17fe7a210f55dd6c84aa60b12d106d47a2 arch=linux-ubuntu18.04-x86_64
+ -   vsawnwb              ^autoconf@2.69%gcc@8.2.0 arch=linux-ubuntu18.04-x86_64
+ -   i3zd457                  ^m4@1.4.18%gcc@8.2.0 patches=3877ab548f88597ab2327a2230ee048d2d07ace1062efe81fc92e91b7f39cd00,c0a408fbffb7255fcc75e26bd8edab116fc81d216bfd18b473668b7739a4158e,fc9b61654a3ba1a8d6cd78ce087e7c96366c290bc8d2c299f09828d793b853c8 +sigsegv arch=linux-ubuntu18.04-x86_64
+ -   bd227q2                      ^libsigsegv@2.11%gcc@8.2.0 arch=linux-ubuntu18.04-x86_64
+ -   5pyk3t3                  ^perl@5.26.2%gcc@8.2.0+cpanm patches=0eac10ed90aeb0459ad8851f88081d439a4e41978e586ec743069e8b059370ac +shared+threads arch=linux-ubuntu18.04-x86_64
+ -   gota243                      ^gdbm@1.18.1%gcc@8.2.0 arch=linux-ubuntu18.04-x86_64
+ -   ltrvf62                          ^readline@7.0%gcc@8.2.0 arch=linux-ubuntu18.04-x86_64
+ -   6mbvq7i                              ^ncurses@6.1%gcc@8.2.0~symlinks~termlib arch=linux-ubuntu18.04-x86_64
+ -   zaevtj5                                  ^pkgconf@1.5.4%gcc@8.2.0 arch=linux-ubuntu18.04-x86_64
+ -   tcf52hq              ^automake@1.16.1%gcc@8.2.0 arch=linux-ubuntu18.04-x86_64
+ -   rcuvdn3              ^libtool@2.4.6%gcc@8.2.0 arch=linux-ubuntu18.04-x86_64
+ -   3iz4m52              ^texinfo@6.5%gcc@8.2.0 arch=linux-ubuntu18.04-x86_64
+[+]  ivqu252      ^zlib@1.2.11%gcc@8.2.0+optimize+pic+shared arch=linux-ubuntu18.04-x86_64
+                </code></pre>
+            </section>
+
+        </section>
+
+        <!-- Store info in a DB -->
+        <section data-background-image="resources/slide-background.svg" data-background-opacity="0.9" >
+
+            <section>
+                <h3>Spack keeps the metadata of the software it installed!</h3>
+            </section>
+
+            <section>
+                <h4>Installed configurations are stored in a JSON file</h4>
+                <pre><code class="json" data-trim>
+{
+ "database": {
+  "installs": {
+   "ivqu252fvh7r5iar6zwx4fmeoxiykln7": {
+    "explicit": true,
+    "installation_time": 1548272929.178339,
+    "ref_count": 0,
+    "installed": true,
+    "path": "/home/mculpo/PycharmProjects/spack/opt/spack/linux-ubuntu18.04-x86_64/gcc-8.2.0/zlib-1.2.11-ivqu252fvh7r5iar6zwx4fmeoxiykln7",
+    "spec": {
+     "zlib": {
+      "version": "1.2.11",
+      "arch": {
+       "platform": "linux",
+       "platform_os": "ubuntu18.04",
+       "target": "x86_64"
+      },
+      "compiler": {
+       "name": "gcc",
+       "version": "8.2.0"
+      },
+      "namespace": "builtin",
+      "parameters": {
+       "optimize": true,
+       "pic": true,
+       "shared": true,
+       "cflags": [],
+       "cppflags": [],
+       "cxxflags": [],
+       "fflags": [],
+       "ldflags": [],
+       "ldlibs": []
+      }
+     }
+    }
+   }
+  },
+  "version": "0.9.3"
+ }
+}
+                </code></pre>
+                <code>opt/spack/.spack-db/index.json</code>
+            </section>
+
+            <section>
+                <h4>Provenance is preserved for each configuration</h4>
+                <pre><code class="shell" data-trim>
+$ tree $(spack location -i hdf5)/.spack
+&lt;prefix&gt;/.spack
+├── archived-files
+│   └── config.log
+├── build.env
+├── build.out
+├── repos
+│   └── builtin
+│       ├── packages
+│       │   ├── hdf5
+│       │   │   └── package.py
+│       │   └── zlib
+│       │       └── package.py
+│       └── repo.yaml
+└── spec.yaml
+
+6 directories, 7 files
+                </code></pre>
+                The JSON database can be regenerated based on this information
+            </section>
+
+            <section>
+                <h4>Tools are then built over the data in the DB</h4>
+                <ul>
+                    <li>Query commands</li>
+                    <li>Uninstallation procedures</li>
+                    <li>Module file generation</li>
+                    <li>Python modules activation</li>
+                    <li>...</li>
+                </ul>
+            </section>
+
+            <section>
+                <h4>Query what's installed from the command line</h4>
+                <pre><code class="shell" data-trim>
+$ spack find zlib
+==> 1 installed package
+-- linux-ubuntu18.04-x86_64 / gcc@8.2.0 ----
+zlib@1.2.11
+
+$ spack find --start-date 'a month ago'
+==> 3 installed packages
+-- linux-ubuntu18.04-x86_64 / gcc@8.2.0 ----
+hdf5@1.10.4  openblas@0.3.5  zlib@1.2.11
+                </code></pre>
+            </section>
+
+            <section>
+                <h4>Uninstall anything in an easy and safe way</h4>
+                <pre><code class="shell" data-trim>
+$ spack find zlib
+==> 2 installed packages
+-- linux-ubuntu18.04-x86_64 / gcc@8.2.0 ----
+zlib@1.2.8  zlib@1.2.11
+
+$ spack uninstall zlib@1.2.8
+==> The following packages will be uninstalled:
+
+-- linux-ubuntu18.04-x86_64 / gcc@8.2.0 ----
+    yxoie27 zlib@1.2.8%gcc+optimize+pic+shared
+==> Do you want to proceed? [y/N] y
+==> Successfully uninstalled zlib@1.2.8%gcc@8.2.0 [...] /yxoie27
+                </code></pre>
+            </section>
+
+            <section>
+                <h4>Generate module files for HPC sites</h4>
+                <ul>
+                    <li>Output highly customizable using YAML files</li>
+                    <li>By default generated via post-install hooks</li>
+                    <li>Can be managed via command line afterwards</li>
+                    <li>Everything is powered by Jinja2 templates</li>
+                    <li>Support for both TCL and Lua modules</li>
+                </ul>
+                <p><a href="https://spack.readthedocs.io/en/latest/tutorial_modules.html">Tutorial: Spack 101 - module files</a></p>
+            </section>
+
+            <section>
+                <h4>Generate module files for HPC sites</h4>
+                <pre><code class="yaml" data-trim>
+modules:
+  lmod:
+    core_compilers:
+      - gcc@4.8.5
+    hierarchy:
+      - mpi
+      - lapack
+    hash_length: 0
+    all:
+      suffixes:
+        +mpi: mpi
+        +openmp: openmp
+        ...
+                </code></pre>
+                <p><a href="https://spack.readthedocs.io/en/latest/tutorial_modules.html">Tutorial: Spack 101 - module files</a></p>
+            </section>
+
+            <section>
+                <h4>Activate python modules on a fine-grained base</h4>
+                <pre><code class="shell" data-trim>
+$ spack install python py-scipy py-numpy
+[...]
+
+$ # Activate only py-numpy
+$ $ spack activate py-numpy
+==> Activating extension py-numpy@1.15.2%gcc@8.2.0+blas+lapack arch=linux-ubuntu18.04-x86_64 /o626ufb for python@2.7.15%gcc@8.2.0+dbm~optimizations patches=123082ab3483ded78e86d7c809e98a804b3465b4683c96bd79a2fd799f572244 +pic+pythoncmd+shared~tk~ucs4 arch=linux-ubuntu18.04-x86_64 /nft4nfs
+
+$ $(spack location -i python)/bin/python
+Python 2.7.15 (default, Jan 25 2019, 09:14:19)
+[GCC 8.2.0] on linux2
+Type "help", "copyright", "credits" or "license" for more information.
+>>> import numpy
+>>> import scipy
+[...]
+ImportError: No module named scipy
+                </code></pre>
+                Activated modules look like they are site installed
+            </section>
+
+            <section>
+                <h4>Scrape build logs of installed configurations</h4>
+                <pre><code class="shell" data-trim="">
+$ spack log-parse $(spack location -i hdf5)/.spack/build.out
+0 errors
+
+$ spack log-parse --show=errors,warnings $(spack location -i hdf5)/.spack/build.out
+0 errors
+741 warnings
+     534       CC       H5dbg.lo
+     535       CC       H5system.lo
+     536     H5system.c: In function 'HDfprintf':
+  >> 537     H5system.c:276:45: warning: format not a string literal, argument types not checked [-Wformat-nonliteral]
+     538                              n = fprintf(stream, format_templ, x);
+     539                                                  ^~~~~~~~~~~~
+[...]
+                </code></pre>
+                Permits to investigate issues reported on
+                software that has already been deployed
+            </section>
+
+        </section>
+
+        <!-- RPATH philosophy -->
+        <section data-background-image="resources/slide-background.svg" data-background-opacity="0.9">
+            <section>
+                <h3>Spack can fine-tune compiler options to user's needs!</h3>
+                <!-- <h3>Spack installed software runs the way it was built!</h3> -->
+            </section>
+
+            <section>
+                <h4>Wrapper scripts mediate compilation</h4>
+                <div>
+                    <img src="resources/compiler-wrapper.svg" height="80%" width="80%"
+                         style="background: none; border: 0">
+                </div>
+                Also ensure the software <em>runs the way it was built</em>
+            </section>
+        </section>
+
+        <!-- Spack environments -->
+        <section data-background-image="resources/slide-background.svg" data-background-opacity="0.9">
+            <section>
+                <h2>Spack Environments</h2>
+                The cool new feature!
+            </section>
+
+            <section>
+                <h4>Spack's store might be inconvenient at times</h4>
+                <pre><code class="shell" data-trim>
+$ spack find
+==> 70 installed packages
+-- linux-ubuntu16.04-x86_64 / clang@3.8.0-2ubuntu4 ----
+tcl@8.6.8  zlib@1.2.8  zlib@1.2.11
+
+-- linux-ubuntu16.04-x86_64 / gcc@4.7 ----
+zlib@1.2.11
+
+-- linux-ubuntu16.04-x86_64 / gcc@5.4.0 ----
+adept-utils@1.0.1  hdf5@1.10.4          mpc@1.1.0
+autoconf@2.69      hdf5@1.10.4          mpfr@3.1.6
+automake@1.16.1    hdf5@1.10.4          mpich@3.2.1
+boost@1.68.0       hwloc@1.11.9         mpileaks@1.0
+bzip2@1.0.6        hypre@2.15.1         mumps@5.1.1
+...
+                </code></pre>
+                It would be nice to have a <em>terser view</em> without throwing away what's already installed
+            </section>
+
+            <section>
+                <h4>Spack environments to the rescue!</h4>
+                <pre><code class="shell" data-trim>
+$ spack env create my-project
+==> Created environment 'my-project' in [...]/my-project
+
+$ spack env activate my-project
+$ spack env status
+==> In environment my-project
+
+$ spack find
+==> In environment my-project
+==> No root specs
+
+==> 0 installed packages
+                </code></pre>
+                An environment is a <em>virtualized</em> Spack instance that can be used for a specific purpose
+            </section>
+
+            <section>
+                <h4>Environments use what's available in the store</h4>
+                <pre><code class="shell" data-trim>
+$ spack find
+==> In environment my-project
+==> No root specs
+
+==> 0 installed packages
+
+$ spack install zlib hdf5~mpi
+==> zlib is already installed in [...]
+==> Installing hdf5
+[...]
+==> Successfully installed hdf5
+  Fetch: 0.06s.  Build: 1m 14.67s.  Total: 1m 14.73s.
+[+] /home/.../hdf5-1.10.4-xucyflhbo2p47n46smfsqo7p2y3hijmd
+                </code></pre>
+                <code>zlib</code> has been reused, <code>hdf5</code> has been installed
+                in the Spack's store and then added
+            </section>
+
+            <section>
+                <h4>Users can set-up groups of packages at once</h4>
+                <pre><code class="shell" data-trim>
+$ spack add hdf5~mpi python
+==> Adding hdf5~mpi to environment my-project
+==> Adding python to environment my-project
+==> Adding mpich to environment my-project
+
+$ spack find -v
+==> In environment my-project
+==> Root specs
+hdf5~mpi  mpich  python
+
+==> 0 installed packages
+
+$ spack install
+[...]
+                </code></pre>
+"<code>spack install</code>" concretizes the root specs and builds what's missing
+            </section>
+
+            <section>
+                <h4>Each detail can be finely tuned</h4>
+                <pre><code class="shell" data-trim>
+$ spack config get
+# This is a Spack Environment file.
+#
+# It describes a set of packages to be installed, along with
+# configuration settings.
+spack:
+  # add package specs to the `specs` list
+  specs: [hdf5~mpi, python, mpich]
+  mirrors: {}
+  modules:
+    enable: []
+  repos: []
+  packages: {}
+  config: {}
+                </code></pre>
+Use "<code>spack config edit</code>" to edit the file and add custom configurations
+            </section>
+
+            <section>
+                <h4>Abstract user requests are stored in <code>spack.yaml</code></h4>
+                <ul>
+                    <li>It's the configuration file we have seen before</li>
+                    <li>Does not have to live inside Spack tree</li>
+                    <li>Can be bundled with <em>anything</em></li>
+                    <li>Can be manipulated directly if it is in the <code>pwd</code></li>
+                    <li>Use <code>spack.yaml</code> to distribute an environment</li>
+                </ul>
+            </section>
+
+            <section>
+                <h4>Fully concretized specs are in <code>spack.lock</code></h4>
+                <pre><code class="json" data-trim>
+{
+  "concrete_specs": {
+   "teneqii2xv5u6zl5r6qi3pwurc6pmypz": {
+    "xz": {
+      "version": "5.2.4",
+      "arch": {
+        "platform": "linux",
+        "platform_os": "ubuntu16.04",
+      "target": "x86_64"
+ },
+ ...
+                </code></pre>
+                Using either <code>spack.yaml</code> or <code>spack.lock</code> you can recreate an environment
+            </section>
+
+            <section>
+                <h3>Coming soon in Spack environments...</h3>
+            </section>
+
+            <section>
+                <h4>Associate a view with an environment</h4>
+                <table width="100%">
+                    <tbody>
+                        <tr>
+                            <td>
+                                <pre><code class="yaml" data-trim>
+spack:
+  specs:
+  - hdf5+mpi
+  - bzip2
+
+  view: True
+                                </code></pre>
+                            </td>
+                            <td>
+                                <pre><code class="shell" data-trim>
+$ ls .spack-env/view/bin
+h5clear   h5diff   ...   h5unjam
+h5copy    h5dump   ...   ph5diff
+h5debug   ...      ...
+
+$ ls .spack-env/view/include
+H5ACpublic.h     ...   hdf5.h
+H5Apublic.h      ...   zconf.h
+H5Cpublic.h      ...   zlib.h
+                                </code></pre>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <em>Views</em> are projections of the Spack combinatorial space into a single prefix
+            </section>
+
+        </section>
+
+        <!-- Next features to come -->
+        <section data-background-image="resources/slide-background.svg" data-background-opacity="0.9">
+            <section>
+                <h2>Spack: next big things</h2>
+                Highlights from what's planned for 2019
+            </section>
+
+            <section>
+                <h4>CI infrastructure for source and binary packages</h4>
+                <div>
+                    <img src="resources/ci_infrastructure.svg" height="100%" width="100%"
+                         style="background: none; border: 0">
+                </div>
+            </section>
+
+            <section>
+                <h4>YAML format to describe entire stacks</h4>
+                <pre><code class="yaml" data-trim>
+spack:
+  matrices:
+  - specs:
+    - zlib@1.2.8
+    - zlib@1.2.11
+    - hdf5~mpi@1.10.2
+    - hdf5+mpi@1.10.2
+    toolchains:
+    - ['%gcc@4.9.3', ^mvapich2@2.2]
+    toolchain-generator:
+    - ['%gcc@7.3.0', '%intel@18.0.0']
+    - [^mvapich2@2.2, ^mvapich2@2.3]
+    exclude:
+    - '%intel@18.0.0 ^mvapich2@2.2'
+
+  - specs:
+    - cmake@3.8.2
+    - python@2.7.15
+    toolchains:
+    - ['%gcc@7.3.0']
+                </code></pre>
+                Single command deployment at HPC facilities
+            </section>
+
+            <section>
+                <h4>Chain instances to read upstream databases</h4>
+                <div>
+                    <img src="resources/spack-chains.svg" width="70%" height="70%"
+                         style="background: none; border: 0">
+                </div>
+                It's Spack all the way down!
+            </section>
+
+            <section>
+                <h4>Specific target information in specs</h4>
+                <div>
+                    <img src="resources/targets.svg" width="45%" height="45%"
+                         style="background: none; border: 0">
+                </div>
+                Given a target automatically activate optimizations
+            </section>
+
+            <section>
+                <h4>Concretization prefers already available binaries</h4>
+                <div>
+                    <img src="resources/concretizer-enhancement.svg" width="65%" height="65%"
+                         style="background: none; border: 0">
+                </div>
+                Probably the <em>most wanted feature</em> in Spack
+            </section>
+        </section>
+
+        <!-- Resources -->
+        <section data-background-image="resources/slide-background.svg" data-background-opacity="0.9">
+            <section>
+                <h2>Thanks for listening! Questions?</h2>
+            </section>
+        </section>
+    </div>
+</div>
+
+<script src="lib/js/head.min.js"></script>
+<script src="js/reveal.js"></script>
+
+<script>
+    // More info about config & dependencies:
+    // - https://github.com/hakimel/reveal.js#configuration
+    // - https://github.com/hakimel/reveal.js#dependencies
+    Reveal.initialize({
+        dependencies: [
+            {src: 'plugin/markdown/marked.js'},
+            {src: 'plugin/markdown/markdown.js'},
+            {src: 'plugin/notes/notes.js', async: true},
+            {
+                src: 'plugin/highlight/highlight.js', async: true, callback: function () {
+                    hljs.initHighlightingOnLoad();
+                }
+            }
+        ]
+    });
+</script>
+</body>
+</html>
