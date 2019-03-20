@@ -36,13 +36,166 @@
             Massimiliano Culpo - SCITAS, EPFL
         </section>
 
+        <!-- Why did the project start? -->
+        <section data-background-image="resources/slide-background.svg" data-background-opacity="0.9">
+
+            <section>
+                <h3>Why did the project start?</h3>
+            </section>
+
+            <section>
+                <h4>Complexity of a typical scientific software</h4>
+                <div>
+                    <img src="resources/dealii.svg" height="80%" width="80%"
+                         style="background: none; border: 0">
+                </div>
+            </section>
+
+            <section>
+                <h4>Combinatorial explosion of deployments in HPC</h4>
+                <div>
+                    <img src="resources/need_for_combinatorics.svg" width="70%" height="70%"
+                         style="background: none; border: 0px">
+                </div>
+            </section>
+
+            <section>
+                <h4>Installing software manually isn't an option!</h4>
+            </section>
+
+            <section>
+                <h4>Compare with what happens on a workstation</h4>
+                <pre><code class="shell" data-trim>
+$ which python
+
+$ apt install python
+Reading package lists... Done
+Building dependency tree
+Reading state information... Done
+[...]
+Setting up python2.7 (2.7.15~rc1-1ubuntu0.1) ...
+Setting up file (1:5.32-2ubuntu0.2) ...
+Setting up libpython-stdlib:amd64 (2.7.15~rc1-1) ...
+Setting up python (2.7.15~rc1-1) ...
+Processing triggers for libc-bin (2.27-3ubuntu1) ...
+
+$ which python
+/usr/bin/python
+                </code></pre>
+                Scientific software must be <em>that easy</em> to use!
+            </section>
+
+        </section>
+
+        <!-- What is Spack? -->
+        <section data-background-image="resources/slide-background.svg" data-background-opacity="0.9">
+
+            <section>
+                <h3>What is Spack?</h3>
+            </section>
+
+        </section>
+
+        <!-- The community around Spack -->
+        <section data-background-image="resources/slide-background.svg" data-background-opacity="0.9">
+
+            <section>
+                <h3>The community around Spack</h3>
+            </section>
+
+        </section>
+
+        <!-- Spack's unique features -->
+        <section data-background-image="resources/slide-background.svg" data-background-opacity="0.9">
+
+            <section>
+                <h3>Spack's unique features</h3>
+            </section>
+
+        </section>
+
+        <!-- Big things on the roadmap -->
+        <section data-background-image="resources/slide-background.svg" data-background-opacity="0.9">
+            <section>
+                <h3>Big things on the roadmap</h3>
+            </section>
+
+            <section>
+                <h4>CI infrastructure for source and binary packages</h4>
+                <div>
+                    <img src="resources/ci_infrastructure.svg" height="100%" width="100%"
+                         style="background: none; border: 0">
+                </div>
+            </section>
+
+            <section>
+                <h4>YAML format to describe entire stacks</h4>
+                <pre><code class="yaml" data-trim>
+spack:
+  matrices:
+  - specs:
+    - zlib@1.2.8
+    - zlib@1.2.11
+    - hdf5~mpi@1.10.2
+    - hdf5+mpi@1.10.2
+    toolchains:
+    - ['%gcc@4.9.3', ^mvapich2@2.2]
+    toolchain-generator:
+    - ['%gcc@7.3.0', '%intel@18.0.0']
+    - [^mvapich2@2.2, ^mvapich2@2.3]
+    exclude:
+    - '%intel@18.0.0 ^mvapich2@2.2'
+
+  - specs:
+    - cmake@3.8.2
+    - python@2.7.15
+    toolchains:
+    - ['%gcc@7.3.0']
+                </code></pre>
+                Single command deployment at HPC facilities
+            </section>
+
+            <section>
+                <h4>Chain instances to read upstream databases</h4>
+                <div>
+                    <img src="resources/spack-chains.svg" width="70%" height="70%"
+                         style="background: none; border: 0">
+                </div>
+                It's Spack all the way down!
+            </section>
+
+            <section>
+                <h4>Specific target information in specs</h4>
+                <div>
+                    <img src="resources/targets.svg" width="45%" height="45%"
+                         style="background: none; border: 0">
+                </div>
+                Given a target automatically activate optimizations
+            </section>
+
+            <section>
+                <h4>Concretization prefers already available binaries</h4>
+                <div>
+                    <img src="resources/concretizer-enhancement.svg" width="65%" height="65%"
+                         style="background: none; border: 0">
+                </div>
+                Probably the <em>most wanted feature</em> in Spack
+            </section>
+        </section>
+
+        <!-- Final slide -->
+        <section data-background-image="resources/slide-background.svg" data-background-opacity="0.9">
+            <section>
+                <h2>Thanks for listening! Questions?</h2>
+            </section>
+        </section>
+
         <!-- SPACK IN a nutshell -->
         <section data-background-image="resources/slide-background.svg" data-background-opacity="0.9">
 
             <section>
                 <img src="resources/spack-logo-white.svg" width="20%" height="auto" style="background: none; border: 0px">
-                <h2>Spack in a nutshell</h2>
-                A 10 minutes introduction to the tool
+                <h3>What is Spack?</h3>
             </section>
 
             <section>
@@ -149,11 +302,12 @@ class Kripke(Package):
 
         </section>
 
-        <!-- How is Spack different from EasyBuild -->
-        <section data-background-image="resources/slide-background.svg" data-background-opacity="0.9" >
+        <section data-background-image="resources/slide-background.svg" data-background-opacity="0.9">
+
             <section>
-                <h3>3 reasons Spack is different from Easybuild</h3>
+                <h2>The community around Spack</h2>
             </section>
+
         </section>
 
         <!-- Fight combinatorics -->
@@ -162,14 +316,6 @@ class Kripke(Package):
                 <h3>Spack fights combinatorics with combinatorics!</h3>
             </section>
 
-            <section>
-                <h4>Complexity of a typical HPC ecosystem</h4>
-                <div>
-                    <img src="resources/need_for_combinatorics.svg" width="70%" height="70%"
-                         style="background: none; border: 0px">
-                </div>
-                Software must be easy to use in any configuration
-            </section>
 
             <section>
                 <h4>The <em>spec</em> syntax describes user's needs</h4>
@@ -660,82 +806,6 @@ H5Cpublic.h      ...   zlib.h
 
         </section>
 
-        <!-- Next features to come -->
-        <section data-background-image="resources/slide-background.svg" data-background-opacity="0.9">
-            <section>
-                <h2>Spack: next big things</h2>
-                Highlights from what's planned for 2019
-            </section>
-
-            <section>
-                <h4>CI infrastructure for source and binary packages</h4>
-                <div>
-                    <img src="resources/ci_infrastructure.svg" height="100%" width="100%"
-                         style="background: none; border: 0">
-                </div>
-            </section>
-
-            <section>
-                <h4>YAML format to describe entire stacks</h4>
-                <pre><code class="yaml" data-trim>
-spack:
-  matrices:
-  - specs:
-    - zlib@1.2.8
-    - zlib@1.2.11
-    - hdf5~mpi@1.10.2
-    - hdf5+mpi@1.10.2
-    toolchains:
-    - ['%gcc@4.9.3', ^mvapich2@2.2]
-    toolchain-generator:
-    - ['%gcc@7.3.0', '%intel@18.0.0']
-    - [^mvapich2@2.2, ^mvapich2@2.3]
-    exclude:
-    - '%intel@18.0.0 ^mvapich2@2.2'
-
-  - specs:
-    - cmake@3.8.2
-    - python@2.7.15
-    toolchains:
-    - ['%gcc@7.3.0']
-                </code></pre>
-                Single command deployment at HPC facilities
-            </section>
-
-            <section>
-                <h4>Chain instances to read upstream databases</h4>
-                <div>
-                    <img src="resources/spack-chains.svg" width="70%" height="70%"
-                         style="background: none; border: 0">
-                </div>
-                It's Spack all the way down!
-            </section>
-
-            <section>
-                <h4>Specific target information in specs</h4>
-                <div>
-                    <img src="resources/targets.svg" width="45%" height="45%"
-                         style="background: none; border: 0">
-                </div>
-                Given a target automatically activate optimizations
-            </section>
-
-            <section>
-                <h4>Concretization prefers already available binaries</h4>
-                <div>
-                    <img src="resources/concretizer-enhancement.svg" width="65%" height="65%"
-                         style="background: none; border: 0">
-                </div>
-                Probably the <em>most wanted feature</em> in Spack
-            </section>
-        </section>
-
-        <!-- Resources -->
-        <section data-background-image="resources/slide-background.svg" data-background-opacity="0.9">
-            <section>
-                <h2>Thanks for listening! Questions?</h2>
-            </section>
-        </section>
     </div>
 </div>
 
