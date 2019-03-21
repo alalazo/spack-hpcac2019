@@ -94,6 +94,65 @@ $ which python
                 <h3>What is Spack?</h3>
             </section>
 
+            <section>
+                <h4>Spack is a <u>package manager</u> for HPC</h4>
+                <pre><code class="shell" data-trim>
+$ # 1. Clone a git repository (or extract a release tarball)
+$ git clone https://github.com/spack/spack.git
+
+$ # 2. Source a setup file (optional)
+$ . spack/share/spack/setup-env.sh
+
+$ # 3. Spack is ready to use
+$ spack install hdf5
+                </code></pre>
+                <p><a href="https://spack.io/">https://spack.io</a></p>
+            </section>
+
+            <section>
+                <h4>Who can profit from Spack?</h4>
+                <ul>
+                    <li>End users of HPC software</li>
+                    <li>HPC application teams</li>
+                    <li>Package developers</li>
+                    <li>User support teams at HPC centers</li>
+                </ul>
+            </section>
+
+            <section>
+                <h4>Packages are Python classes</h4>
+                <pre><code class="python" data-trim="">
+class Kripke(Package):
+    """Kripke is a simple, scalable, 3D Sn
+    deterministic particle transport mini app.
+    """
+    homepage = "https://codesign.llnl.gov/kripke.php"
+    url      = "https://codesign.llnl.gov/kripke-1.1.tar.gz"
+
+    version('1.1', '7fe6f2b26ed983a6ce5495ab701f85bf')
+    version('1.0', 'f4247dde07952a5ff866b24e45b5cdd1')
+
+    variant('mpi', default=True, description='Build with MPI.')
+
+    depends_on('mpi', when="+mpi")
+                </code></pre>
+            </section>
+
+            <section>
+                <h4>Easy to work with packages</h4>
+                <pre><code class="shell" data-trim>
+                    $ # Create a new package in the built-in repository
+                    $ spack create &lt;url&gt;
+
+                    $ # Modify an existing package
+                    $ export EDITOR='emacs -nw'
+                    $ spack edit &lt;package-name&gt;
+
+                    $ # Scrape for versions of an existing package
+                    $ spack versions &lt;package-name&gt;
+                </code></pre>
+            </section>
+
         </section>
 
         <!-- The community around Spack -->
@@ -199,30 +258,6 @@ spack:
             </section>
 
             <section>
-                <h3>Spack is a <u>package manager</u></h3>
-                <ul>
-                    <li>Tracks metadata for installed software</li>
-                    <li>Multiple configurations of the same software</li>
-                    <li>Support for supercomputers, linux and MacOS</li>
-                    <li>Builds from sources, supports binary packaging</li>
-                    <!-- <li>Provides packages for multiple languages</li> -->
-                    <li>Can be used for deployment, development or QA</li>
-                </ul>
-                <br>
-                <p><a href="https://spack.io/">https://spack.io</a></p>
-            </section>
-
-            <section>
-                <h3>Who can profit from Spack?</h3>
-                <ul>
-                    <li>End users of HPC software</li>
-                    <li>HPC application teams</li>
-                    <li>Package developers</li>
-                    <li>User support teams at HPC centers</li>
-                </ul>
-            </section>
-
-            <section>
                 <h3>Spack is <u>open source</u></h3>
                 <ul>
                     <li>Started by <u>Todd Gamblin</u> (LLNL, Lead Developer)</li>
@@ -254,50 +289,6 @@ spack:
                     >
                 </div>
                 Spack is committed to be open source
-            </section>
-
-            <section>
-                <h3>Clone it and you're ready to go!</h3>
-                <pre><code class="shell" data-trim>
-	      $ git clone https://github.com/spack/spack.git
-	      $ . spack/share/spack/setup-env.sh
-
-	      $ spack install hdf5
-	            </code></pre>
-            </section>
-
-            <section>
-                <h3>Packages are Python classes</h3>
-                <pre><code class="python" data-trim="">
-class Kripke(Package):
-    """Kripke is a simple, scalable, 3D Sn
-    deterministic particle transport mini app.
-    """
-    homepage = "https://codesign.llnl.gov/kripke.php"
-    url      = "https://codesign.llnl.gov/kripke-1.1.tar.gz"
-
-    version('1.1', '7fe6f2b26ed983a6ce5495ab701f85bf')
-    version('1.0', 'f4247dde07952a5ff866b24e45b5cdd1')
-
-    variant('mpi', default=True, description='Build with MPI.')
-
-    depends_on('mpi', when="+mpi")
-                </code></pre>
-            </section>
-
-            <section>
-                <h3>Easy to work with packages</h3>
-                <pre><code class="shell" data-trim>
-                    $ # Create a new package in the built-in repository
-                    $ spack create &lt;url&gt;
-
-                    $ # Modify an existing package
-                    $ export EDITOR='emacs -nw'
-                    $ spack edit &lt;package-name&gt;
-
-                    $ # Scrape for versions of an existing package
-                    $ spack versions &lt;package-name&gt;
-                </code></pre>
             </section>
 
         </section>
