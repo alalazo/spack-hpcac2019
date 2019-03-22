@@ -170,18 +170,18 @@ class Kripke(Package):
             <section>
                 <h4>Spack is an <u>open source</u> project</h4>
                 <ul>
-                    <li>Started by <u>Todd Gamblin</u> (LLNL, Lead Developer)</li>
-                    <li>Very active and engaging community</li>
+                    <li>Lead developer: <u>Todd Gamblin</u> (LLNL)</li>
+                    <li>Codebase hosted on Github</li>
                     <li>Dual license Apache-2.0 or MIT</li>
-                    <li>Switched from LGPL to be company friendly</li>
                     <li>Want to get buy-in and PRs by HPC vendors</li>
+                    <li>Very active and engaging community</li>
                 </ul>
                 <br>
                 <p><a href="https://github.com/spack/spack">https://github.com/spack/spack</a></p>
             </section>
 
             <section>
-                <h3>Spack is used worldwide!</h3>
+                <h4>Spack is used worldwide!</h4>
                 <div>
                     <img src="resources/spack-usage-worldwide.png" height="70%" width="70%">
                 </div>
@@ -189,7 +189,7 @@ class Kripke(Package):
             </section>
 
             <section>
-                <h3>Contributions to Spack</h3>
+                <h4>Contributions to Spack</h4>
                 <div>
                     <img id="contributions-plot"
                          src="resources/github_contributions_packages.png"
@@ -201,12 +201,20 @@ class Kripke(Package):
                 Spack is committed to be open source
             </section>
 
+            <section>
+                <h4>Spack is already used at many HPC sites</h4>
+            </section>
+
+            <section>
+                <h4>Ongoing efforts to disseminate best practices</h4>
+
+            </section>
         </section>
 
         <!-- Fight combinatorics -->
         <section data-background-image="resources/slide-background.svg" data-background-opacity="0.9" >
             <section>
-                <h3>Spack fights combinatorics with combinatorics!</h3>
+                <h3>How does Spack manage the combinatorial explosion of configurations?</h3>
             </section>
 
             <section>
@@ -306,7 +314,7 @@ Concretized
         <section data-background-image="resources/slide-background.svg" data-background-opacity="0.9" >
 
             <section>
-                <h3>Spack keeps the metadata of the software it installed!</h3>
+                <h3>Spack has been designed with reproducibility in mind!</h3>
             </section>
 
             <section>
@@ -381,17 +389,6 @@ $ tree $(spack location -i hdf5)/.spack
             </section>
 
             <section>
-                <h4>Tools are then built over the data in the DB</h4>
-                <ul>
-                    <li>Query commands</li>
-                    <li>Uninstallation procedures</li>
-                    <li>Module file generation</li>
-                    <li>Python modules activation</li>
-                    <li>...</li>
-                </ul>
-            </section>
-
-            <section>
                 <h4>Query what's installed from the command line</h4>
                 <pre><code class="shell" data-trim>
 $ spack find zlib
@@ -426,18 +423,6 @@ $ spack uninstall zlib@1.2.8
 
             <section>
                 <h4>Generate module files for HPC sites</h4>
-                <ul>
-                    <li>Output highly customizable using YAML files</li>
-                    <li>By default generated via post-install hooks</li>
-                    <li>Can be managed via command line afterwards</li>
-                    <li>Everything is powered by Jinja2 templates</li>
-                    <li>Support for both TCL and Lua modules</li>
-                </ul>
-                <p><a href="https://spack.readthedocs.io/en/latest/tutorial_modules.html">Tutorial: Spack 101 - module files</a></p>
-            </section>
-
-            <section>
-                <h4>Generate module files for HPC sites</h4>
                 <pre><code class="yaml" data-trim>
 modules:
   lmod:
@@ -454,49 +439,6 @@ modules:
         ...
                 </code></pre>
                 <p><a href="https://spack.readthedocs.io/en/latest/tutorial_modules.html">Tutorial: Spack 101 - module files</a></p>
-            </section>
-
-            <section>
-                <h4>Activate python modules on a fine-grained base</h4>
-                <pre><code class="shell" data-trim>
-$ spack install python py-scipy py-numpy
-[...]
-
-$ # Activate only py-numpy
-$ $ spack activate py-numpy
-==> Activating extension py-numpy@1.15.2%gcc@8.2.0+blas+lapack arch=linux-ubuntu18.04-x86_64 /o626ufb for python@2.7.15%gcc@8.2.0+dbm~optimizations patches=123082ab3483ded78e86d7c809e98a804b3465b4683c96bd79a2fd799f572244 +pic+pythoncmd+shared~tk~ucs4 arch=linux-ubuntu18.04-x86_64 /nft4nfs
-
-$ $(spack location -i python)/bin/python
-Python 2.7.15 (default, Jan 25 2019, 09:14:19)
-[GCC 8.2.0] on linux2
-Type "help", "copyright", "credits" or "license" for more information.
->>> import numpy
->>> import scipy
-[...]
-ImportError: No module named scipy
-                </code></pre>
-                Activated modules look like they are site installed
-            </section>
-
-            <section>
-                <h4>Scrape build logs of installed configurations</h4>
-                <pre><code class="shell" data-trim="">
-$ spack log-parse $(spack location -i hdf5)/.spack/build.out
-0 errors
-
-$ spack log-parse --show=errors,warnings $(spack location -i hdf5)/.spack/build.out
-0 errors
-741 warnings
-     534       CC       H5dbg.lo
-     535       CC       H5system.lo
-     536     H5system.c: In function 'HDfprintf':
-  >> 537     H5system.c:276:45: warning: format not a string literal, argument types not checked [-Wformat-nonliteral]
-     538                              n = fprintf(stream, format_templ, x);
-     539                                                  ^~~~~~~~~~~~
-[...]
-                </code></pre>
-                Permits to investigate issues reported on
-                software that has already been deployed
             </section>
 
         </section>
