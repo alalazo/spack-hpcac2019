@@ -279,35 +279,6 @@ class Openblas(MakefilePackage):
                 All the software is installed in the <em>Spack's store</em>
             </section>
 
-            <section>
-                <h4>The results of concretization can be queried</h4>
-                <pre><code class="shell" data-trim>
-$ spack spec -Il hdf5+mpi ^mpich
-Input spec
---------------------------------
- -   hdf5+mpi
- -       ^mpich
-
-Concretized
---------------------------------
- -   wqoi56r  hdf5@1.10.4%gcc@8.2.0~cxx~debug~fortran~hl+mpi+pic+shared~szip~threadsafe arch=linux-ubuntu18.04-x86_64
- -   k2mhs2k      ^mpich@3.3%gcc@8.2.0 device=ch3 +hydra netmod=tcp +pmi+romio~verbs arch=linux-ubuntu18.04-x86_64
- -   rwrp443          ^findutils@4.6.0%gcc@8.2.0 patches=84b916c0bf8c51b7e7b28417692f0ad3e7030d1f3c248ba77c42ede5c1c5d11e,bd9e4e5cc280f9753ae14956c4e4aa17fe7a210f55dd6c84aa60b12d106d47a2 arch=linux-ubuntu18.04-x86_64
- -   vsawnwb              ^autoconf@2.69%gcc@8.2.0 arch=linux-ubuntu18.04-x86_64
- -   i3zd457                  ^m4@1.4.18%gcc@8.2.0 patches=3877ab548f88597ab2327a2230ee048d2d07ace1062efe81fc92e91b7f39cd00,c0a408fbffb7255fcc75e26bd8edab116fc81d216bfd18b473668b7739a4158e,fc9b61654a3ba1a8d6cd78ce087e7c96366c290bc8d2c299f09828d793b853c8 +sigsegv arch=linux-ubuntu18.04-x86_64
- -   bd227q2                      ^libsigsegv@2.11%gcc@8.2.0 arch=linux-ubuntu18.04-x86_64
- -   5pyk3t3                  ^perl@5.26.2%gcc@8.2.0+cpanm patches=0eac10ed90aeb0459ad8851f88081d439a4e41978e586ec743069e8b059370ac +shared+threads arch=linux-ubuntu18.04-x86_64
- -   gota243                      ^gdbm@1.18.1%gcc@8.2.0 arch=linux-ubuntu18.04-x86_64
- -   ltrvf62                          ^readline@7.0%gcc@8.2.0 arch=linux-ubuntu18.04-x86_64
- -   6mbvq7i                              ^ncurses@6.1%gcc@8.2.0~symlinks~termlib arch=linux-ubuntu18.04-x86_64
- -   zaevtj5                                  ^pkgconf@1.5.4%gcc@8.2.0 arch=linux-ubuntu18.04-x86_64
- -   tcf52hq              ^automake@1.16.1%gcc@8.2.0 arch=linux-ubuntu18.04-x86_64
- -   rcuvdn3              ^libtool@2.4.6%gcc@8.2.0 arch=linux-ubuntu18.04-x86_64
- -   3iz4m52              ^texinfo@6.5%gcc@8.2.0 arch=linux-ubuntu18.04-x86_64
-[+]  ivqu252      ^zlib@1.2.11%gcc@8.2.0+optimize+pic+shared arch=linux-ubuntu18.04-x86_64
-                </code></pre>
-            </section>
-
         </section>
 
         <!-- Store info in a DB -->
@@ -389,6 +360,40 @@ $ tree $(spack location -i hdf5)/.spack
             </section>
 
             <section>
+                <h4>Tools are then built over the data in the DB</h4>
+            </section>
+
+            <section>
+                <h4>Check beforehand the result of concretization</h4>
+                <pre><code class="shell" data-trim>
+$ spack spec -Il hdf5+mpi ^mpich
+Input spec
+--------------------------------
+ -   hdf5+mpi
+ -       ^mpich
+
+Concretized
+--------------------------------
+ -   wqoi56r  hdf5@1.10.4%gcc@8.2.0~cxx~debug~fortran~hl+mpi+pic+shared~szip~threadsafe arch=linux-ubuntu18.04-x86_64
+ -   k2mhs2k      ^mpich@3.3%gcc@8.2.0 device=ch3 +hydra netmod=tcp +pmi+romio~verbs arch=linux-ubuntu18.04-x86_64
+ -   rwrp443          ^findutils@4.6.0%gcc@8.2.0 patches=84b916c0bf8c51b7e7b28417692f0ad3e7030d1f3c248ba77c42ede5c1c5d11e,bd9e4e5cc280f9753ae14956c4e4aa17fe7a210f55dd6c84aa60b12d106d47a2 arch=linux-ubuntu18.04-x86_64
+ -   vsawnwb              ^autoconf@2.69%gcc@8.2.0 arch=linux-ubuntu18.04-x86_64
+ -   i3zd457                  ^m4@1.4.18%gcc@8.2.0 patches=3877ab548f88597ab2327a2230ee048d2d07ace1062efe81fc92e91b7f39cd00,c0a408fbffb7255fcc75e26bd8edab116fc81d216bfd18b473668b7739a4158e,fc9b61654a3ba1a8d6cd78ce087e7c96366c290bc8d2c299f09828d793b853c8 +sigsegv arch=linux-ubuntu18.04-x86_64
+ -   bd227q2                      ^libsigsegv@2.11%gcc@8.2.0 arch=linux-ubuntu18.04-x86_64
+ -   5pyk3t3                  ^perl@5.26.2%gcc@8.2.0+cpanm patches=0eac10ed90aeb0459ad8851f88081d439a4e41978e586ec743069e8b059370ac +shared+threads arch=linux-ubuntu18.04-x86_64
+ -   gota243                      ^gdbm@1.18.1%gcc@8.2.0 arch=linux-ubuntu18.04-x86_64
+ -   ltrvf62                          ^readline@7.0%gcc@8.2.0 arch=linux-ubuntu18.04-x86_64
+ -   6mbvq7i                              ^ncurses@6.1%gcc@8.2.0~symlinks~termlib arch=linux-ubuntu18.04-x86_64
+ -   zaevtj5                                  ^pkgconf@1.5.4%gcc@8.2.0 arch=linux-ubuntu18.04-x86_64
+ -   tcf52hq              ^automake@1.16.1%gcc@8.2.0 arch=linux-ubuntu18.04-x86_64
+ -   rcuvdn3              ^libtool@2.4.6%gcc@8.2.0 arch=linux-ubuntu18.04-x86_64
+ -   3iz4m52              ^texinfo@6.5%gcc@8.2.0 arch=linux-ubuntu18.04-x86_64
+[+]  ivqu252      ^zlib@1.2.11%gcc@8.2.0+optimize+pic+shared arch=linux-ubuntu18.04-x86_64
+                </code></pre>
+            </section>
+
+
+            <section>
                 <h4>Query what's installed from the command line</h4>
                 <pre><code class="shell" data-trim>
 $ spack find zlib
@@ -443,10 +448,105 @@ modules:
 
         </section>
 
+        <!-- Spack environments -->
+        <section data-background-image="resources/slide-background.svg" data-background-opacity="0.9">
+            <section>
+                <h3>Spack permits to set-up specific purpose environments</h3>
+            </section>
+
+            <section>
+                <h4>Spack environments are a <em>virtualized</em> instances</h4>
+                <pre><code class="shell" data-trim>
+$ spack env create my-project
+==> Created environment 'my-project' in [...]/my-project
+
+$ spack env activate my-project
+$ spack env status
+==> In environment my-project
+
+$ spack find
+==> In environment my-project
+==> No root specs
+
+==> 0 installed packages
+                </code></pre>
+            </section>
+
+            <section>
+                <h4>Groups of packages can be set-up at once</h4>
+                <pre><code class="shell" data-trim>
+$ spack add hdf5~mpi python
+==> Adding hdf5~mpi to environment my-project
+==> Adding python to environment my-project
+==> Adding mpich to environment my-project
+
+$ spack find -v
+==> In environment my-project
+==> Root specs
+hdf5~mpi  mpich  python
+
+==> 0 installed packages
+
+$ spack install
+[...]
+                </code></pre>
+            </section>
+
+            <section>
+                <h4>Each detail can be finely tuned</h4>
+                <pre><code class="shell" data-trim>
+$ spack config get
+# This is a Spack Environment file.
+#
+# It describes a set of packages to be installed, along with
+# configuration settings.
+spack:
+  # add package specs to the `specs` list
+  specs: [hdf5~mpi, python, mpich]
+  mirrors: {}
+  modules:
+    enable: []
+  repos: []
+  packages: {}
+  config: {}
+                </code></pre>
+            </section>
+
+            <section>
+                <h4>Abstract user requests are stored in <code>spack.yaml</code></h4>
+                <ul>
+                    <li>It's the configuration file we have seen before</li>
+                    <li>Does not have to live inside Spack tree</li>
+                    <li>Can be bundled with <em>anything</em></li>
+                    <li>Can be manipulated directly if it is in the <code>pwd</code></li>
+                    <li>Use <code>spack.yaml</code> to distribute an environment</li>
+                </ul>
+            </section>
+
+            <section>
+                <h4>Fully concretized specs are in <code>spack.lock</code></h4>
+                <pre><code class="json" data-trim>
+{
+  "concrete_specs": {
+   "teneqii2xv5u6zl5r6qi3pwurc6pmypz": {
+    "xz": {
+      "version": "5.2.4",
+      "arch": {
+        "platform": "linux",
+        "platform_os": "ubuntu16.04",
+      "target": "x86_64"
+ },
+ ...
+                </code></pre>
+                Using either <code>spack.yaml</code> or <code>spack.lock</code> you can recreate an environment
+            </section>
+
+        </section>
+
         <!-- Big things on the roadmap -->
         <section data-background-image="resources/slide-background.svg" data-background-opacity="0.9">
             <section>
-                <h3>Big things on the roadmap</h3>
+                <h3>The next big things on the roadmap</h3>
             </section>
 
             <section>
@@ -517,204 +617,6 @@ spack:
             <section>
                 <h2>Thanks for listening! Questions?</h2>
             </section>
-        </section>
-
-
-        <!-- RPATH philosophy -->
-        <section data-background-image="resources/slide-background.svg" data-background-opacity="0.9">
-            <section>
-                <h3>Spack can fine-tune compiler options to user's needs!</h3>
-                <!-- <h3>Spack installed software runs the way it was built!</h3> -->
-            </section>
-
-            <section>
-                <h4>Wrapper scripts mediate compilation</h4>
-                <div>
-                    <img src="resources/compiler-wrapper.svg" height="80%" width="80%"
-                         style="background: none; border: 0">
-                </div>
-                Also ensure the software <em>runs the way it was built</em>
-            </section>
-        </section>
-
-        <!-- Spack environments -->
-        <section data-background-image="resources/slide-background.svg" data-background-opacity="0.9">
-            <section>
-                <h2>Spack Environments</h2>
-                The cool new feature!
-            </section>
-
-            <section>
-                <h4>Spack's store might be inconvenient at times</h4>
-                <pre><code class="shell" data-trim>
-$ spack find
-==> 70 installed packages
--- linux-ubuntu16.04-x86_64 / clang@3.8.0-2ubuntu4 ----
-tcl@8.6.8  zlib@1.2.8  zlib@1.2.11
-
--- linux-ubuntu16.04-x86_64 / gcc@4.7 ----
-zlib@1.2.11
-
--- linux-ubuntu16.04-x86_64 / gcc@5.4.0 ----
-adept-utils@1.0.1  hdf5@1.10.4          mpc@1.1.0
-autoconf@2.69      hdf5@1.10.4          mpfr@3.1.6
-automake@1.16.1    hdf5@1.10.4          mpich@3.2.1
-boost@1.68.0       hwloc@1.11.9         mpileaks@1.0
-bzip2@1.0.6        hypre@2.15.1         mumps@5.1.1
-...
-                </code></pre>
-                It would be nice to have a <em>terser view</em> without throwing away what's already installed
-            </section>
-
-            <section>
-                <h4>Spack environments to the rescue!</h4>
-                <pre><code class="shell" data-trim>
-$ spack env create my-project
-==> Created environment 'my-project' in [...]/my-project
-
-$ spack env activate my-project
-$ spack env status
-==> In environment my-project
-
-$ spack find
-==> In environment my-project
-==> No root specs
-
-==> 0 installed packages
-                </code></pre>
-                An environment is a <em>virtualized</em> Spack instance that can be used for a specific purpose
-            </section>
-
-            <section>
-                <h4>Environments use what's available in the store</h4>
-                <pre><code class="shell" data-trim>
-$ spack find
-==> In environment my-project
-==> No root specs
-
-==> 0 installed packages
-
-$ spack install zlib hdf5~mpi
-==> zlib is already installed in [...]
-==> Installing hdf5
-[...]
-==> Successfully installed hdf5
-  Fetch: 0.06s.  Build: 1m 14.67s.  Total: 1m 14.73s.
-[+] /home/.../hdf5-1.10.4-xucyflhbo2p47n46smfsqo7p2y3hijmd
-                </code></pre>
-                <code>zlib</code> has been reused, <code>hdf5</code> has been installed
-                in the Spack's store and then added
-            </section>
-
-            <section>
-                <h4>Users can set-up groups of packages at once</h4>
-                <pre><code class="shell" data-trim>
-$ spack add hdf5~mpi python
-==> Adding hdf5~mpi to environment my-project
-==> Adding python to environment my-project
-==> Adding mpich to environment my-project
-
-$ spack find -v
-==> In environment my-project
-==> Root specs
-hdf5~mpi  mpich  python
-
-==> 0 installed packages
-
-$ spack install
-[...]
-                </code></pre>
-"<code>spack install</code>" concretizes the root specs and builds what's missing
-            </section>
-
-            <section>
-                <h4>Each detail can be finely tuned</h4>
-                <pre><code class="shell" data-trim>
-$ spack config get
-# This is a Spack Environment file.
-#
-# It describes a set of packages to be installed, along with
-# configuration settings.
-spack:
-  # add package specs to the `specs` list
-  specs: [hdf5~mpi, python, mpich]
-  mirrors: {}
-  modules:
-    enable: []
-  repos: []
-  packages: {}
-  config: {}
-                </code></pre>
-Use "<code>spack config edit</code>" to edit the file and add custom configurations
-            </section>
-
-            <section>
-                <h4>Abstract user requests are stored in <code>spack.yaml</code></h4>
-                <ul>
-                    <li>It's the configuration file we have seen before</li>
-                    <li>Does not have to live inside Spack tree</li>
-                    <li>Can be bundled with <em>anything</em></li>
-                    <li>Can be manipulated directly if it is in the <code>pwd</code></li>
-                    <li>Use <code>spack.yaml</code> to distribute an environment</li>
-                </ul>
-            </section>
-
-            <section>
-                <h4>Fully concretized specs are in <code>spack.lock</code></h4>
-                <pre><code class="json" data-trim>
-{
-  "concrete_specs": {
-   "teneqii2xv5u6zl5r6qi3pwurc6pmypz": {
-    "xz": {
-      "version": "5.2.4",
-      "arch": {
-        "platform": "linux",
-        "platform_os": "ubuntu16.04",
-      "target": "x86_64"
- },
- ...
-                </code></pre>
-                Using either <code>spack.yaml</code> or <code>spack.lock</code> you can recreate an environment
-            </section>
-
-            <section>
-                <h3>Coming soon in Spack environments...</h3>
-            </section>
-
-            <section>
-                <h4>Associate a view with an environment</h4>
-                <table width="100%">
-                    <tbody>
-                        <tr>
-                            <td>
-                                <pre><code class="yaml" data-trim>
-spack:
-  specs:
-  - hdf5+mpi
-  - bzip2
-
-  view: True
-                                </code></pre>
-                            </td>
-                            <td>
-                                <pre><code class="shell" data-trim>
-$ ls .spack-env/view/bin
-h5clear   h5diff   ...   h5unjam
-h5copy    h5dump   ...   ph5diff
-h5debug   ...      ...
-
-$ ls .spack-env/view/include
-H5ACpublic.h     ...   hdf5.h
-H5Apublic.h      ...   zconf.h
-H5Cpublic.h      ...   zlib.h
-                                </code></pre>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-                <em>Views</em> are projections of the Spack combinatorial space into a single prefix
-            </section>
-
         </section>
 
     </div>
