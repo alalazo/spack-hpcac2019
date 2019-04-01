@@ -158,15 +158,6 @@ class Kripke(Package):
                 </code></pre>
             </section>
 
-        </section>
-
-        <!-- The community around Spack -->
-        <section data-background-image="resources/slide-background.svg" data-background-opacity="0.9">
-
-            <section>
-                <h3>The community around Spack</h3>
-            </section>
-
             <section>
                 <h4>Spack is an <u>open source</u> project</h4>
                 <ul>
@@ -201,9 +192,9 @@ class Kripke(Package):
                 Spack is committed to be open source
             </section>
 
-            <section>
+            <!-- section>
                 <h4>Spack is already used at many HPC sites</h4>
-            </section>
+            </section -->
 
             <section>
                 <h4>Ongoing efforts to disseminate best practices</h4>
@@ -214,7 +205,7 @@ class Kripke(Package):
         <!-- Fight combinatorics -->
         <section data-background-image="resources/slide-background.svg" data-background-opacity="0.9" >
             <section>
-                <h3>How does Spack manage the combinatorial explosion of configurations?</h3>
+                <h3>Spack fights combinatorics with combinatorics</h3>
             </section>
 
             <section>
@@ -285,7 +276,7 @@ class Openblas(MakefilePackage):
         <section data-background-image="resources/slide-background.svg" data-background-opacity="0.9" >
 
             <section>
-                <h3>Spack has been designed with reproducibility in mind!</h3>
+                <h3>Spack has been designed with reproducibility in mind</h3>
             </section>
 
             <section>
@@ -455,45 +446,7 @@ modules:
             </section>
 
             <section>
-                <h4>Spack environments are a <em>virtualized</em> instances</h4>
-                <pre><code class="shell" data-trim>
-$ spack env create my-project
-==> Created environment 'my-project' in [...]/my-project
-
-$ spack env activate my-project
-$ spack env status
-==> In environment my-project
-
-$ spack find
-==> In environment my-project
-==> No root specs
-
-==> 0 installed packages
-                </code></pre>
-            </section>
-
-            <section>
-                <h4>Groups of packages can be set-up at once</h4>
-                <pre><code class="shell" data-trim>
-$ spack add hdf5~mpi python
-==> Adding hdf5~mpi to environment my-project
-==> Adding python to environment my-project
-==> Adding mpich to environment my-project
-
-$ spack find -v
-==> In environment my-project
-==> Root specs
-hdf5~mpi  mpich  python
-
-==> 0 installed packages
-
-$ spack install
-[...]
-                </code></pre>
-            </section>
-
-            <section>
-                <h4>Each detail can be finely tuned</h4>
+                <h4>Spack environments are <em>virtualized</em> instances</h4>
                 <pre><code class="shell" data-trim>
 $ spack config get
 # This is a Spack Environment file.
